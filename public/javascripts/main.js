@@ -2,8 +2,8 @@ var swfu;
 $(function(){
 	//初始化地图
 	var map = new BMap.Map("map");          // 创建地图实例
-	var point = new BMap.Point(116.404, 39.915);  // 创建点坐标
-	map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别  
+	var point = new BMap.Point(106.404, 32.915);  // 创建点坐标
+	map.centerAndZoom(point, 5);                 // 初始化地图，设置中心点坐标和地图级别  
 	map.addControl(new BMap.NavigationControl());
 	map.enableScrollWheelZoom();
 	addRightClickBtn(map);
