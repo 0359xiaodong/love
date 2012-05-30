@@ -1,0 +1,18 @@
+#operations {
+  margin: 5px 0;
+}
+#signup-tips{
+	float: left;
+	margin-top: 30px;
+	padding: 10px;
+	height: 100px;
+	width: 250px;
+}
+#map{
+  width: 100%;
+  height: 460px;
+}
+#image {
+	max-height: 400px;
+	max-width: 800px;
+}
