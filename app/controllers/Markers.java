@@ -13,6 +13,7 @@ import play.Logger;
 public class Markers extends Application {
 
     public static void add(String lng, String lat) {
+        Logger.info(lng + " " + lat);
         Marker marker = new Marker(lng, lat);
         marker.save();
     }

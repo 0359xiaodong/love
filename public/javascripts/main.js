@@ -41,7 +41,7 @@ function addMarker(map,point,title){
 	marker.addEventListener("click", function(){
 		openMarkerEvent(point);
 	});
-	var label = new BMap.Label(title.substring(0,10),{"offset":new BMap.Size(20,-10)});
+	var label = new BMap.Label(title!=null&&title!="null"?title.substring(0,10):"",{"offset":new BMap.Size(20,-10)});
 	label.setStyle({border:"1px solid #777",fontSize:"12px"});
     marker.setLabel(label);
 }
