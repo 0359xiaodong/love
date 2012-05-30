@@ -8,10 +8,11 @@ import models.Photo;
 import org.bson.types.ObjectId;
 
 import play.Logger;
+import utils.Secure;
 
 
 public class Markers extends Application {
-
+    @Secure(login = true)
     public static void add(String lng, String lat) {
         Logger.info(lng + " " + lat);
         Marker marker = new Marker(lng, lat);
@@ -40,6 +41,7 @@ public class Markers extends Application {
         renderJSON(data);
     }
 
+    @Secure(login = true)
     public static void saveTitle(String title, String markerId) {
         Marker m = Marker.filter("_id", new ObjectId(markerId)).first();
         m.title = title;

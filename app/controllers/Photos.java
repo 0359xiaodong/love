@@ -9,11 +9,12 @@ import org.bson.types.ObjectId;
 
 import play.Logger;
 import utils.FileUtils;
+import utils.Secure;
 
 
 
 public class Photos extends Application {
-
+    @Secure(login = true)
     public static void upload(File Filedata, String sessionId, String markerId) throws Exception {
         String fileName = System.currentTimeMillis() + "_" + Filedata.getName();
         // 存储到数据库
@@ -27,6 +28,7 @@ public class Photos extends Application {
         Filedata.delete();
     }
 
+    @Secure(login = true)
     public static void delete(String name, String markerId) {
         Marker m = Marker.filter("_id", new ObjectId(markerId)).first();
         Photo p = Photo.filter("name", name).first();

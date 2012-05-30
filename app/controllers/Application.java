@@ -1,11 +1,13 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
+import models.User;
 
-import java.util.*;
+import org.bson.types.ObjectId;
 
-import models.*;
+import play.Logger;
+import play.mvc.Before;
+import play.mvc.Controller;
+import utils.Secure;
 
 public class Application extends Controller {
 
@@ -13,4 +15,21 @@ public class Application extends Controller {
         render();
     }
 
+    @Before
+    public static void login() {
+        Secure secure = getActionAnnotation(Secure.class);
+        Logger.info("login checking");
+        if (secure != null && secure.login()) {
+            if (session.get("USER_ID") == null) {
+                Logger.info("need login");
+                Users.needLogin();
+            }
+            String userId = session.get("USER_ID").toString();
+            User user = User.filter("_id", new ObjectId(userId)).first();
+            if (user == null) {
+                Logger.info("need login");
+                Users.needLogin();
+            }
+        }
+    }
 }

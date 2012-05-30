@@ -2,8 +2,10 @@ package controllers;
 
 import models.User;
 import play.data.validation.Required;
+import utils.Secure;
 
 public class Users extends Application {
+    @Secure(login = true)
     public static void create(@Required String username, @Required String password,
             @Required String password_confirm) {
         User user = User.filter("username", username).first();
@@ -42,4 +44,9 @@ public class Users extends Application {
             renderJSON("{\"exist\":false}");
         }
     }
+
+    public static void needLogin() {
+        renderJSON("{\"msg\":\"需要登陆才能进一步操作！\"}");
+    }
+
 }

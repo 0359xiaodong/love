@@ -23,9 +23,14 @@ function addRightClickBtn(map){
 	  {
 	   text:'添加相册',
 	   callback:function(point){
-		   addMarker(map,point);
 		   //添加Marker到数据库
-		   $.post("/Markers/add",{lng:point.lng,lat:point.lat});
+		   $.post("/Markers/add",{lng:point.lng,lat:point.lat},function(data){
+			   if(data.msg){
+				   alert(data.msg);
+			   }else{
+				   addMarker(map,point);
+			   }
+		   });
 	   }
 	  }
 	 ];
@@ -41,9 +46,12 @@ function addMarker(map,point,title){
 	marker.addEventListener("click", function(){
 		openMarkerEvent(point);
 	});
-	var label = new BMap.Label(title!=null&&title!="null"?title.substring(0,10):"",{"offset":new BMap.Size(20,-10)});
+	var title = title=="null"?"":title.substring(0,10);
+	var label = new BMap.Label(title!="null"? title.substring(0,10):"null",{"offset":new BMap.Size(20,-10)});
 	label.setStyle({border:"1px solid #777",fontSize:"12px"});
-    marker.setLabel(label);
+	if(title!=""){
+		marker.setLabel(label);
+	}
 }
 function openMarkerEvent(point){
 	//打开相册modal
@@ -81,8 +89,12 @@ function deletePhoto(){
 	}
 	var name = $("#image").attr("filename");
 	$.post("/Photos/delete",{name:name,markerId:$("#markerId").val()},function(data){
-		$("#image").attr("src","/data/"+data.name);
-		$("#image").attr("fileName",data.name);
+		if(data.msg){
+			alert(data.msg);
+		}else{
+			$("#image").attr("src","/data/"+data.name);
+			$("#image").attr("fileName",data.name);
+		}
 	});
 }
 function saveTitle(){
