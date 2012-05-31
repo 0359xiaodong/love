@@ -4,28 +4,34 @@ import java.io.File;
 
 import models.Marker;
 import models.Photo;
+import models.User;
 
 import org.bson.types.ObjectId;
 
-import play.Logger;
 import utils.FileUtils;
 import utils.Secure;
 
 
 
 public class Photos extends Application {
-    @Secure(login = true)
-    public static void upload(File Filedata, String sessionId, String markerId) throws Exception {
+    /**
+     * 需要独立的权限认证(swfupload使用flash和服务器端进行socket通信，session数据丢失)
+     */
+    public static void upload(File Filedata, String userId, String markerId) throws Exception {
         String fileName = System.currentTimeMillis() + "_" + Filedata.getName();
+        User user = User.filter("_id", new ObjectId(userId)).first();
         // 存储到数据库
-        Logger.info(markerId);
         Marker marker = Marker.filter("_id", new ObjectId(markerId)).first();
-        Photo photo = new Photo(marker, fileName);
-        photo.save();
-        // 存储文件
-        File file = new File(FileUtils.getApplicationPath("data") + fileName);
-        Filedata.renameTo(file);
-        Filedata.delete();
+        if (marker != null && user != null) {
+            Photo photo = new Photo(marker, fileName);
+            photo.save();
+            // 存储文件
+            File file = new File(FileUtils.getApplicationPath("data") + fileName);
+            Filedata.renameTo(file);
+            Filedata.delete();
+        } else {
+            Users.needLogin();
+        }
     }
 
     @Secure(login = true)

@@ -18,16 +18,16 @@ public class Application extends Controller {
     @Before
     public static void login() {
         Secure secure = getActionAnnotation(Secure.class);
-        Logger.info("login checking");
+        Logger.info("login checking , user id = " + session.get("USER_ID"));
         if (secure != null && secure.login()) {
             if (session.get("USER_ID") == null) {
-                Logger.info("need login");
+                Logger.info("user id is null , need login");
                 Users.needLogin();
             }
             String userId = session.get("USER_ID").toString();
             User user = User.filter("_id", new ObjectId(userId)).first();
             if (user == null) {
-                Logger.info("need login");
+                Logger.info("user is null , need login");
                 Users.needLogin();
             }
         }

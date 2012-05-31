@@ -106,7 +106,7 @@ function initSwfUpload(){
 	var settings = {
 			flash_url : "public/javascripts/swfupload/swfupload.swf",
 			upload_url: "/Photos/upload",
-			post_params: {"markerId" : $("#markerId").val()},
+			post_params: {},
 			file_size_limit : "5 MB",
 			file_types : "*.*",
 			file_types_description : "All Files",
@@ -133,7 +133,7 @@ function initSwfUpload(){
 			file_dialog_complete_handler : fileDialogComplete,
 			upload_start_handler : function(){
 				uploadStart();
-				swfu.setPostParams({"markerId" : $("#markerId").val()});
+				swfu.setPostParams({"markerId" : $("#markerId").val(),"userId":$("#userId").val()});
 			},
 			upload_progress_handler : uploadProgress,
 			upload_error_handler : uploadError,

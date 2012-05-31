@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.Logger;
 import play.data.validation.Required;
 import utils.Secure;
 
@@ -29,7 +30,8 @@ public class Users extends Application {
 
     public static void login(@Required String username, @Required String password) {
         User u = User.filter("username", username).filter("password", password).first();
-        if (u != null) {
+        Logger.info("user login, username = " + username + " , user id = " + u.getId());
+        if (u != null && u.getId() != null) {
             session.put("USER_ID", u.getId());
             session.put("USERNAME", username);
         }

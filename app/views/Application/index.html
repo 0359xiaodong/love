@@ -28,9 +28,11 @@
         <img id="image" height="400" src="" filename=""/>
     </div>
     <div class="modal-footer">
+        #{if session.USER_ID!=null}
         <a class="btn" href="#upload" data-toggle="modal" id="uploadBtn">上传图片</a>
         <a href="#" class="btn" id="delGalleryBtn">删除相册</a>
         <a href="#" class="btn" onclick="deletePhoto()">删除图片</a>
+        #{/if}
         <!-- 
         <a href="#" class="btn" onclick="prevPhoto()">上一张</a>
         <a href="#" class="btn" onclick="nextPhoto()">下一张</a>
