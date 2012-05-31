@@ -62,7 +62,8 @@ function openMarkerEvent(point){
 	//给当前marker id域赋值，并渲染相册
 	$.post("/Markers/open",{lng:point.lng,lat:point.lat},function(data){
 		$("#markerId").val(data.id);
-		$("#image").attr("src","/data/"+data.photo);
+		//加载第一张图片
+		loadPhoto(data.photo);
 		$("#image").attr("filename",data.photo);
 		$("#title").val(data.title);
 		document.onkeydown = keyEvent;
@@ -72,14 +73,14 @@ function openMarkerEvent(point){
 function nextPhoto(){
 	var name = $("#image").attr("filename");
 	$.post("/Photos/next",{name:name,markerId:$("#markerId").val()},function(data){
-		$("#image").attr("src","/data/"+data.name);
+		loadPhoto(data.name);
 		$("#image").attr("fileName",data.name);
 	});
 }
 function prevPhoto(){
 	var name = $("#image").attr("filename");
 	$.post("/Photos/prev",{name:name,markerId:$("#markerId").val()},function(data){
-		$("#image").attr("src","/data/"+data.name);
+		loadPhoto(data.name);
 		$("#image").attr("fileName",data.name);
 	});
 }
@@ -92,10 +93,20 @@ function deletePhoto(){
 		if(data.msg){
 			alert(data.msg);
 		}else{
-			$("#image").attr("src","/data/"+data.name);
+			loadPhoto(data.name);
 			$("#image").attr("fileName",data.name);
 		}
 	});
+}
+function loadPhoto(name){
+	$("#loading").show();
+	var url = "/data/"+name;
+	//动画效果
+	var img = new Image();
+	$(img).bind('load',function(){
+        $('#loading').hide();
+        $("#image").attr('src',url);
+    }).attr('src',url);
 }
 function saveTitle(){
 	var title = $("#title").val();
@@ -107,7 +118,7 @@ function initSwfUpload(){
 			flash_url : "public/javascripts/swfupload/swfupload.swf",
 			upload_url: "/Photos/upload",
 			post_params: {},
-			file_size_limit : "2 MB",
+			file_size_limit : "10 MB",
 			file_types : "*.*",
 			file_types_description : "All Files",
 			file_upload_limit : 0,
