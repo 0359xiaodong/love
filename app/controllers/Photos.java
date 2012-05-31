@@ -8,6 +8,7 @@ import models.User;
 
 import org.bson.types.ObjectId;
 
+import play.libs.Images;
 import utils.FileUtils;
 import utils.Secure;
 
@@ -27,7 +28,7 @@ public class Photos extends Application {
             photo.save();
             // 存储文件
             File file = new File(FileUtils.getApplicationPath("data") + fileName);
-            Filedata.renameTo(file);
+            Images.resize(Filedata, file, -1, 550);
             Filedata.delete();
         } else {
             Users.needLogin();

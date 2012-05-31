@@ -107,10 +107,10 @@ function initSwfUpload(){
 			flash_url : "public/javascripts/swfupload/swfupload.swf",
 			upload_url: "/Photos/upload",
 			post_params: {},
-			file_size_limit : "5 MB",
+			file_size_limit : "2 MB",
 			file_types : "*.*",
 			file_types_description : "All Files",
-			file_upload_limit : 100,
+			file_upload_limit : 0,
 			file_queue_limit : 0,
 			custom_settings : {
 				progressTarget : "fsUploadProgress",
