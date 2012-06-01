@@ -8,7 +8,7 @@ $(function(){
 	map.enableScrollWheelZoom();
 	addRightClickBtn(map);
 	//初始化地图上的markers
-	$.post("/Markers/list",function(markers){
+	$.post(path+"Markers/list",function(markers){
 		for(var i=0;i<markers.length;i++){
 			addMarker(map,new BMap.Point(markers[i].lng, markers[i].lat),markers[i].title);
 		}
@@ -24,7 +24,7 @@ function addRightClickBtn(map){
 	   text:'添加相册',
 	   callback:function(point){
 		   //添加Marker到数据库
-		   $.post("/Markers/add",{lng:point.lng,lat:point.lat},function(data){
+		   $.post(path+"Markers/add",{lng:point.lng,lat:point.lat},function(data){
 			   if(data.msg){
 				   alert(data.msg);
 			   }else{
@@ -60,7 +60,7 @@ function openMarkerEvent(point){
 	});
 	$("#image-gallery").modal("show");
 	//给当前marker id域赋值，并渲染相册
-	$.post("/Markers/open",{lng:point.lng,lat:point.lat},function(data){
+	$.post(path+"Markers/open",{lng:point.lng,lat:point.lat},function(data){
 		$("#markerId").val(data.id);
 		//加载第一张图片
 		loadPhoto(data.photo);
@@ -72,14 +72,14 @@ function openMarkerEvent(point){
 
 function nextPhoto(){
 	var name = $("#image").attr("filename");
-	$.post("/Photos/next",{name:name,markerId:$("#markerId").val()},function(data){
+	$.post(path+"Photos/next",{name:name,markerId:$("#markerId").val()},function(data){
 		loadPhoto(data.name);
 		$("#image").attr("fileName",data.name);
 	});
 }
 function prevPhoto(){
 	var name = $("#image").attr("filename");
-	$.post("/Photos/prev",{name:name,markerId:$("#markerId").val()},function(data){
+	$.post(path+"Photos/prev",{name:name,markerId:$("#markerId").val()},function(data){
 		loadPhoto(data.name);
 		$("#image").attr("fileName",data.name);
 	});
@@ -89,7 +89,7 @@ function deletePhoto(){
 		return;
 	}
 	var name = $("#image").attr("filename");
-	$.post("/Photos/delete",{name:name,markerId:$("#markerId").val()},function(data){
+	$.post(path+"Photos/delete",{name:name,markerId:$("#markerId").val()},function(data){
 		if(data.msg){
 			alert(data.msg);
 		}else{
@@ -100,7 +100,7 @@ function deletePhoto(){
 }
 function loadPhoto(name){
 	$("#loading").show();
-	var url = "/data/"+name;
+	var url = path+"data/"+name;
 	//动画效果
 	var img = new Image();
 	$(img).bind('load',function(){
@@ -111,12 +111,12 @@ function loadPhoto(name){
 function saveTitle(){
 	var title = $("#title").val();
 	var markerId = $("#markerId").val();
-	$.post("/Markers/saveTitle",{title:title,markerId:markerId});
+	$.post(path+"Markers/saveTitle",{title:title,markerId:markerId});
 }
 function initSwfUpload(){
 	var settings = {
-			flash_url : "public/javascripts/swfupload/swfupload.swf",
-			upload_url: "/Photos/upload",
+			flash_url : path+"public/javascripts/swfupload/swfupload.swf",
+			upload_url: path+"Photos/upload",
 			post_params: {},
 			file_size_limit : "10 MB",
 			file_types : "*.*",
@@ -155,7 +155,7 @@ function initSwfUpload(){
 		swfu = new SWFUpload(settings);
 }
 function checkUser(node){
-	$.post("/Users/checkUser",{username:$(node).val()},function(data){
+	$.post(path+"Users/checkUser",{username:$(node).val()},function(data){
 		if(data.exist){
 			$("#signup-btn").attr("disabled","disabled");
 			$("#username-tip").html("该账号已存在！");
